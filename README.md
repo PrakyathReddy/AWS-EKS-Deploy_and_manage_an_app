@@ -1,1 +1,1 @@
-# AWS-EKS-Deploy_and_manage_an_app
+# AWS-EKS: Deploy and manage the Game 2048
