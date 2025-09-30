@@ -67,4 +67,16 @@ create fargate profiles,
    > 2025-09-30 22:06:59 [ℹ] creating Fargate profile "2048-app" on EKS cluster "app-cluster"
    > 2025-09-30 22:07:18 [ℹ] created Fargate profile "2048-app" on EKS cluster "app-cluster"
 
-7.
+7. Deploy the 2048 game using a pre-existing template -
+   % kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.5.4/docs/examples/2048/2048_full.yaml
+   namespace/game-2048 created
+   deployment.apps/deployment-2048 created
+   service/service-2048 created
+   ingress.networking.k8s.io/ingress-2048 created
+
+It creates namespace, deployment with the 2048 image on 5 replicas, creates a service and then an ingress. Ingress will not work at this point simply because there's no ingress controller yet.
+
+% k get ingress -A
+NAMESPACE   NAME           CLASS   HOSTS   ADDRESS   PORTS   AGE
+game-2048   ingress-2048   alb     *                 80      5m34s
+
