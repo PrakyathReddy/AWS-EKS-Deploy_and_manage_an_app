@@ -93,3 +93,38 @@ $ eksctl utils associate-iam-oidc-provider --cluster $cluster_name --approve
 2025-09-30 22:33:35 [ℹ] will create IAM Open ID Connect provider for cluster "app-cluster" in "us-east-1"
 2025-09-30 22:33:36 [✔] created IAM Open ID Connect provider for cluster "app-cluster" in "us-east-1"
 
+9. Install ALB controller which is just a pod. This pod should be granted access to AWS services such as ALB
+   First create an IAM policy and role for this
+   Download IAM policy: curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.11.0/docs/install/iam_policy.json
+
+Create IAM policy
+aws iam create-policy \
+ --policy-name AWSLoadBalancerControllerIAMPolicy \
+ --policy-document file://iam_policy.json
+{
+"Policy": {
+"PolicyName": "AWSLoadBalancerControllerIAMPolicy",
+"PolicyId": "ANPAU2HSR6LJSSUQFNZAO",
+"Arn": "arn:aws:iam::331221168851:policy/AWSLoadBalancerControllerIAMPolicy",
+"Path": "/",
+"DefaultVersionId": "v1",
+"AttachmentCount": 0,
+"PermissionsBoundaryUsageCount": 0,
+"IsAttachable": true,
+"CreateDate": "2025-09-30T17:14:09+00:00",
+"UpdateDate": "2025-09-30T17:14:09+00:00"
+}
+}
+
+Create IAM role
+eksctl create iamserviceaccount \
+ --cluster=app-cluster \
+ --namespace=kube-system \
+ --name=aws-load-balancer-controller \
+ --role-name AmazonEKSLoadBalancerControllerRole \
+ --attach-policy-arn=arn:aws:iam::331221168851:policy/AWSLoadBalancerControllerIAMPolicy \
+ --approve
+service account is getting created and attached to the role
+
+We will then use the same service account (iamserviceaccount) in the application
+
