@@ -1,4 +1,4 @@
-# AWS-EKS: Deploy and manage the Game 2048
+# AWS-EKS: Deploy and manage a Game app - 2048
 
 1. install kubectl - https://kubernetes.io/docs/tasks/tools/install-kubectl-macos/#install-with-homebrew-on-macos:~:text=rm%20kubectl.sha256-,Install%20with%20Homebrew%20on%20macOS,-If%20you%20are
 
@@ -181,4 +181,5 @@ Ref github: https://github.com/iam-veeramalla/aws-devops-zero-to-hero/tree/main/
 
 $  eksctl delete fargateprofile --cluster app-cluster --name 2048-app
 2025-09-30 23:27:28 [ℹ]  deleted Fargate profile "2048-app" on EKS cluster "app-cluster"
+$  eksctl delete cluster --name app-cluster     
 
