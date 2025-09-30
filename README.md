@@ -155,6 +155,24 @@ TEST SUITE: None
 NOTES:
 AWS Load Balancer controller installed!
 
-$ k get deploy -n kube-system   
-NAME                           READY   UP-TO-DATE   AVAILABLE   AGE
-aws-load-balancer-controller   2/2     2            2           106s
+$ k get deploy -n kube-system  
+NAME READY UP-TO-DATE AVAILABLE AGE
+aws-load-balancer-controller 2/2 2 2 106s
+
+The load balancer controller deployment creates 2 replicas, one in each availability zone, continuously watches for ingress resources and creates ALB resources in 2 AZ's
+
+Now with the ALB load balancer successfully up and running, ingress resource will get a valid address
+
+$ k get ingress -A  
+NAMESPACE NAME CLASS HOSTS ADDRESS PORTS AGE
+game-2048 ingress-2048 alb \* k8s-game2048-ingress2-c7d1378cbc-912773785.us-east-1.elb.amazonaws.com 80 54m
+
+This address is that of the load balancer that the ingress controller has created after watching and acting on the ingress resource
+
+success !!
+
+App now available for public access on:
+http://k8s-game2048-ingress2-c7d1378cbc-912773785.us-east-1.elb.amazonaws.com/
+
+Source: https://youtu.be/RRCrY12VY_s?si=RsB--pmpzzbH27Jc
+Ref github: https://github.com/iam-veeramalla/aws-devops-zero-to-hero/tree/main/day-22
