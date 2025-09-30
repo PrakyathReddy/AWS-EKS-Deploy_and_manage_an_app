@@ -77,6 +77,19 @@ create fargate profiles,
 It creates namespace, deployment with the 2048 image on 5 replicas, creates a service and then an ingress. Ingress will not work at this point simply because there's no ingress controller yet.
 
 % k get ingress -A
-NAMESPACE   NAME           CLASS   HOSTS   ADDRESS   PORTS   AGE
-game-2048   ingress-2048   alb     *                 80      5m34s
+NAMESPACE NAME CLASS HOSTS ADDRESS PORTS AGE
+game-2048 ingress-2048 alb \* 80 5m34s
+
+8. create ingress controller which will then read the ingress resource called ingress-2048 and then create a load balancer for us along with configuration of target group, ports to access, etc.
+
+Deploy ALB ingress controller
+
+As a pre-requisite, first setup OIDC connector
+Configure IAM OIDC provider
+
+$ export cluster_name=demo-cluster
+$ oidc_id=$(aws eks describe-cluster --name $cluster_name --query "cluster.identity.oidc.issuer" --output text | cut -d '/' -f 5)
+$ eksctl utils associate-iam-oidc-provider --cluster $cluster_name --approve
+2025-09-30 22:33:35 [ℹ] will create IAM Open ID Connect provider for cluster "app-cluster" in "us-east-1"
+2025-09-30 22:33:36 [✔] created IAM Open ID Connect provider for cluster "app-cluster" in "us-east-1"
 
