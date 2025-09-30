@@ -128,3 +128,33 @@ service account is getting created and attached to the role
 
 We will then use the same service account (iamserviceaccount) in the application
 
+10. create application load balancer - ALB controller. Will use helm chart that will create the actual controller using service account created earlier
+
+install helm: $ brew install helm
+
+$ helm repo add eks https://aws.github.io/eks-charts
+$ helm repo update eks
+
+Install the helm chart
+
+$ helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system \
+ --set clusterName=app-cluster \
+ --set serviceAccount.create=false \
+ --set serviceAccount.name=aws-load-balancer-controller \
+ --set region=us-east-1 \
+ --set vpcId=vpc-0637b5825d9256cee
+
+vpc id from cluster > networking > VPC
+
+NAME: aws-load-balancer-controller
+LAST DEPLOYED: Tue Sep 30 22:57:25 2025
+NAMESPACE: kube-system
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+AWS Load Balancer controller installed!
+
+$ k get deploy -n kube-system   
+NAME                           READY   UP-TO-DATE   AVAILABLE   AGE
+aws-load-balancer-controller   2/2     2            2           106s
