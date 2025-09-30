@@ -169,10 +169,16 @@ game-2048 ingress-2048 alb \* k8s-game2048-ingress2-c7d1378cbc-912773785.us-east
 
 This address is that of the load balancer that the ingress controller has created after watching and acting on the ingress resource
 
-success !!
+11. success !!
 
 App now available for public access on:
 http://k8s-game2048-ingress2-c7d1378cbc-912773785.us-east-1.elb.amazonaws.com/
 
 Source: https://youtu.be/RRCrY12VY_s?si=RsB--pmpzzbH27Jc
 Ref github: https://github.com/iam-veeramalla/aws-devops-zero-to-hero/tree/main/day-22
+
+12. Delete EKS Cluster and all associated resources
+
+$  eksctl delete fargateprofile --cluster app-cluster --name 2048-app
+2025-09-30 23:27:28 [ℹ]  deleted Fargate profile "2048-app" on EKS cluster "app-cluster"
+
